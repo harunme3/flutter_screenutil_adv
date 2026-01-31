@@ -71,6 +71,13 @@ extension EdgeInsetsExtension on EdgeInsets {
         left: left.dg,
       );
 
+  EdgeInsets get ar => copyWith(
+        top: top.ar,
+        bottom: bottom.ar,
+        right: right.ar,
+        left: left.ar,
+      );
+
   EdgeInsets get w => copyWith(
         top: top.w,
         bottom: bottom.w,
@@ -117,6 +124,8 @@ extension RadiusExtension on Radius {
   Radius get dm => Radius.elliptical(x.dm, y.dm);
 
   Radius get dg => Radius.elliptical(x.dg, y.dg);
+
+  Radius get ar => Radius.elliptical(x.ar, y.ar);
 
   Radius get w => Radius.elliptical(x.w, y.w);
 
