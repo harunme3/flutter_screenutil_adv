@@ -29,31 +29,6 @@ class ScreenUtil {
   late FontSizeResolver fontSizeResolver;
   late double _scaleDiagonal;
 
-  /// Manually wait for window size to be initialized
-  ///
-  /// `Recommended` to use before you need access window size
-  /// or in custom splash/bootstrap screen [FutureBuilder]
-  ///
-  /// example:
-  /// ```dart
-  /// ...
-  /// ScreenUtilInit(
-  ///   designSize: const Size(360, 690),
-  ///   child: MaterialApp(...),
-  /// );
-  /// ...
-  ///   FutureBuilder(
-  ///     future: Future.wait([..., ensureScreenSize(), ...]),
-  ///     builder: (context, snapshot) {
-  ///       if (snapshot.hasData) return const HomeScreen();
-  ///       return Material(
-  ///         child: LayoutBuilder(
-  ///           ...
-  ///         ),
-  ///       );
-  ///     },
-  ///   )
-  /// ```
   static Future<void> ensureScreenSize([
     ui.FlutterView? window,
     Duration duration = const Duration(milliseconds: 10),

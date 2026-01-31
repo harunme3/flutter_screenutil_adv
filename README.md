@@ -1,28 +1,8 @@
 # flutter_screenutil
 
-[![Flutter Package](https://img.shields.io/pub/v/flutter_screenutil.svg)](https://pub.dev/packages/flutter_screenutil)
-[![Pub Points](https://img.shields.io/pub/points/flutter_screenutil)](https://pub.dev/packages/flutter_screenutil/score)
-[![Popularity](https://img.shields.io/pub/popularity/flutter_screenutil)](https://pub.dev/packages/flutter_screenutil/score)
-[![CodeFactor](https://www.codefactor.io/repository/github/openflutter/flutter_screenutil/badge)](https://www.codefactor.io/repository/github/openflutter/flutter_screenutil)
+**A flutter plugin for adapting screen and font size. Let your UI display a reasonable layout on different screen sizes!**
 
-**A flutter plugin for adapting screen and font size.Let your UI display a reasonable layout on different screen sizes!**
-
-*Note*: This plugin is still under development, and some APIs might not be available yet.
-
-[中文文档](https://github.com/OpenFlutter/flutter_screenutil/blob/master/README_CN.md)  
-
-[README em Português](https://github.com/OpenFlutter/flutter_screenutil/blob/master/README_PT.md)
-
-[github](https://github.com/OpenFlutter/flutter_screenutil)
-
-[Update log](https://github.com/OpenFlutter/flutter_screenutil/blob/master/CHANGELOG.md)
-
-<p align="center">
-<a href="https://afdian.com/a/zy124"><img width="200" src="https://pic1.afdiancdn.com/static/img/welcome/button-sponsorme.png" alt="zy0124"></a>
-</p>
-<p align="center">
-<a href="https://www.buymeacoffee.com/zhuoyuanL" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-green.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;"></a>
-</p>
+_Note_: This is a simplified and enhanced version with additional scaling methods.
 
 ## Usage
 
@@ -47,26 +27,25 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 ### Properties
 
-| Property          | Type             | Default Value | Description                                                                                                                                   |
-| ----------------- | ---------------- | ------------- |-----------------------------------------------------------------------------------------------------------------------------------------------|
-| designSize        | Size             | Size(360,690) | The size of the device screen in the design draft, in dp                                                                                      |
-| builder           | Function         | null          | Return widget that uses the library in a property (ex: MaterialApp's theme)                                                                   |
-| child             | Widget           | null          | A part of builder that its dependencies/properties don't use the library                                                                      |
-| rebuildFactor     | Function         | _default_     | Function that take old and new screen metrics and returns whether to rebuild or not when changes.                                             |
-| splitScreenMode   | bool             | false         | support for split screen                                                                                                                      |
-| minTextAdapt      | bool             | false         | Whether to adapt the text according to the minimum of width and height                                                                        |
-| context           | BuildContext     | null          | Get physical device data if not provided, by MediaQuery.of(context)                                                                           |
-| fontSizeResolver  | Function         | _default_     | Function that specify how font size should be adapted. Default is that font size scale with width of screen.                                  |
-| responsiveWidgets | Iterable<String> | null          | List/Set of widget names that should be included in rebuilding tree. (See [How flutter_screenutil marks a widget needs build](#rebuild-list)) |
-| excludeWidgets    | Iterable<String> | null          | List/Set of widget names that should be excluded from rebuilding tree.                                                                        |
-| enableScaleWH    | Function | null          | Support enable scale width and height.                                                                                                        |
-| enableScaleText    | Function | null          | Support enable scale text.                                                                                                                    |
-
+| Property          | Type             | Default Value           | Description                                                                                                                                   |
+| ----------------- | ---------------- | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| designSize        | Size             | Size(360,690)           | The size of the device screen in the design draft, in dp                                                                                      |
+| builder           | Function         | null                    | Return widget that uses the library in a property (ex: MaterialApp's theme)                                                                   |
+| child             | Widget           | null                    | A part of builder that its dependencies/properties don't use the library                                                                      |
+| rebuildFactor     | Function         | RebuildFactors.size     | Function that take old and new screen metrics and returns whether to rebuild or not when changes.                                             |
+| splitScreenMode   | bool             | true                    | Support for split screen                                                                                                                      |
+| minTextAdapt      | bool             | true                    | Whether to adapt the text according to the minimum of width and height                                                                        |
+| fontSizeResolver  | FontSizeResolver | FontSizeResolvers.scale | Function that specifies how font size should be adapted. Available: `scale`, `width`, `height`, `radius`, `diameter`, `diagonal`, `area`      |
+| responsiveWidgets | Iterable<String> | null                    | List/Set of widget names that should be included in rebuilding tree. (See [How flutter_screenutil marks a widget needs build](#rebuild-list)) |
+| excludeWidgets    | Iterable<String> | null                    | List/Set of widget names that should be excluded from rebuilding tree.                                                                        |
+| ensureScreenSize  | bool             | true                    | Ensures screen size is initialized before building widgets                                                                                    |
 
 **Note : You must either provide builder, child or both.**
 
 ### Rebuild list
-Starting from version 5.9.0, ScreenUtilInit won't rebuild the whole widget tree, instead it will mark widget needs build only if:
+
+ScreenUtilInit won't rebuild the whole widget tree, instead it will mark widget needs build only if:
+
 - Widget is not a flutter widget (widgets are available in [Flutter Docs](https://docs.flutter.dev/reference/widgets))
 - Widget does not start with underscore (`_`)
 - Widget does not declare `SU` mixin
@@ -74,7 +53,7 @@ Starting from version 5.9.0, ScreenUtilInit won't rebuild the whole widget tree,
 
 If you have a widget that uses the library and doesn't meet these options you can either add `SU` mixin or add widget name in responsiveWidgets list.
 
-### Initialize and set the fit size and font size to scale according to the system's "font size" accessibility option 
+### Initialize and set the fit size and font size to scale according to the system's "font size" accessibility option
 
 Please set the size of the design draft before use, the width and height of the design draft.
 
@@ -181,7 +160,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    //Set the fit size (fill in the screen size of the device in the design) 
+    //Set the fit size (fill in the screen size of the device in the design)
     //If the design is based on the size of the 360*690(dp)
     ScreenUtil.init(context, designSize: const Size(360, 690));
     ...
@@ -193,56 +172,85 @@ class _HomePageState extends State<HomePage> {
 
 ### API
 
-#### Enable or disable scale
+#### Font Size Resolver Options
+
+You can customize how font sizes are scaled using the `fontSizeResolver` parameter:
 
 ```dart
-  Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      enableScaleWH: ()=>false,
-      enableScaleText: ()=>false,
-      //...
-    );
-  }
+ScreenUtilInit(
+  fontSizeResolver: FontSizeResolvers.scale,  // Default: scales with width (minTextAdapt affects this)
+  // Other options:
+  // fontSizeResolver: FontSizeResolvers.width,     // Scale based on width
+  // fontSizeResolver: FontSizeResolvers.height,    // Scale based on height
+  // fontSizeResolver: FontSizeResolvers.radius,    // Scale based on min(width, height)
+  // fontSizeResolver: FontSizeResolvers.diameter,  // Scale based on max(width, height)
+  // fontSizeResolver: FontSizeResolvers.diagonal,  // Scale based on diagonal
+  // fontSizeResolver: FontSizeResolvers.area,      // Scale based on area (width * height)
+  //...
+)
 ```
-
-or
-
-```dart
-ScreenUtil.enableScale(enableWH: () => false, enableText: () => false);
-```
-
 
 #### Pass the dp size of the design draft
 
 ```dart
-    ScreenUtil().setWidth(540)  (dart sdk>=2.6 : 540.w) //Adapted to screen width
-    ScreenUtil().setHeight(200) (dart sdk>=2.6 : 200.h) //Adapted to screen height , under normal circumstances, the height still uses x.w
-    ScreenUtil().radius(200)    (dart sdk>=2.6 : 200.r)    //Adapt according to the smaller of width or height
-    ScreenUtil().setSp(24)      (dart sdk>=2.6 : 24.sp) //Adapter font
-    12.sm   //return min(12,12.sp)
+    // Basic scaling methods
+    ScreenUtil().setWidth(540)  (dart sdk>=2.6 : 540.w)   // Adapted to screen width
+    ScreenUtil().setHeight(200) (dart sdk>=2.6 : 200.h)   // Adapted to screen height
+    ScreenUtil().radius(200)    (dart sdk>=2.6 : 200.r)   // Adapt according to min(width, height)
+    ScreenUtil().setSp(24)      (dart sdk>=2.6 : 24.sp)   // Adapter font
+    12.spMin   // return min(12, 12.sp)
+    12.spMax   // return max(12, 12.sp)
 
-    ScreenUtil().pixelRatio       //Device pixel density
-    ScreenUtil().screenWidth   (dart sdk>=2.6 : 1.sw)    //Device width
-    ScreenUtil().screenHeight  (dart sdk>=2.6 : 1.sh)    //Device height
-    ScreenUtil().bottomBarHeight  //Bottom safe zone distance, suitable for buttons with full screen
-    ScreenUtil().statusBarHeight  //Status bar height , Notch will be higher
-    ScreenUtil().textScaleFactor  //System font scaling factor
+    // New scaling methods
+    ScreenUtil().diagonal(100)  (dart sdk>=2.6 : 100.dg)  // Scale based on diagonal (√(width² + height²))
+    ScreenUtil().area(100)      (dart sdk>=2.6 : 100.ar)  // Scale based on area (width * height)
+    ScreenUtil().diameter(100)  (dart sdk>=2.6 : 100.dm)  // Scale based on max(width, height)
 
-    ScreenUtil().scaleWidth //The ratio of actual width to UI design
-    ScreenUtil().scaleHeight //The ratio of actual height to UI design
+    // Device information
+    ScreenUtil().pixelRatio       // Device pixel density
+    ScreenUtil().screenWidth   (dart sdk>=2.6 : 1.sw)    // Device width
+    ScreenUtil().screenHeight  (dart sdk>=2.6 : 1.sh)    // Device height
+    ScreenUtil().bottomBarHeight  // Bottom safe zone distance
+    ScreenUtil().statusBarHeight  // Status bar height, Notch will be higher
+    ScreenUtil().textScaleFactor  // System font scaling factor
 
-    ScreenUtil().orientation  //Screen orientation
-    0.2.sw  //0.2 times the screen width
-    0.5.sh  //50% of screen height
-    20.setVerticalSpacing  // SizedBox(height: 20 * scaleHeight)
-    20.horizontalSpace  // SizedBox(height: 20 * scaleWidth)
-    const RPadding.all(8)   // Padding.all(8.r) - take advantage of const key word
-    EdgeInsets.all(10).w    //EdgeInsets.all(10.w)
-    REdgeInsets.all(8)       // EdgeInsets.all(8.r)
-    EdgeInsets.only(left:8,right:8).r // EdgeInsets.only(left:8.r,right:8.r).
-    BoxConstraints(maxWidth: 100, minHeight: 100).w    //BoxConstraints(maxWidth: 100.w, minHeight: 100.w)
-    Radius.circular(16).w          //Radius.circular(16.w)
-    BorderRadius.all(Radius.circular(16)).w  
+    ScreenUtil().scaleWidth   // The ratio of actual width to UI design
+    ScreenUtil().scaleHeight  // The ratio of actual height to UI design
+
+    ScreenUtil().orientation  // Screen orientation
+
+    // Convenience extensions
+    0.2.sw  // 0.2 times the screen width
+    0.5.sh  // 50% of screen height
+    20.verticalSpace    // SizedBox(height: 20 * scaleHeight)
+    20.horizontalSpace  // SizedBox(width: 20 * scaleWidth)
+
+    // EdgeInsets extensions
+    EdgeInsets.all(10).w    // EdgeInsets.all(10.w)
+    EdgeInsets.all(10).h    // EdgeInsets.all(10.h)
+    EdgeInsets.all(10).r    // EdgeInsets.all(10.r)
+    EdgeInsets.all(10).dg   // EdgeInsets.all(10.dg) - diagonal
+    EdgeInsets.all(10).ar   // EdgeInsets.all(10.ar) - area
+    EdgeInsets.all(10).dm   // EdgeInsets.all(10.dm) - diameter
+
+    // BorderRadius extensions
+    BorderRadius.all(Radius.circular(16)).w   // Width-based
+    BorderRadius.all(Radius.circular(16)).h   // Height-based
+    BorderRadius.all(Radius.circular(16)).r   // Radius-based
+
+    // Radius extensions
+    Radius.circular(16).w   // Width-based
+    Radius.circular(16).h   // Height-based
+    Radius.circular(16).r   // Radius-based
+    Radius.circular(16).dg  // Diagonal-based
+    Radius.circular(16).ar  // Area-based
+    Radius.circular(16).dm  // Diameter-based
+
+    // BoxConstraints extensions
+    BoxConstraints(maxWidth: 100, minHeight: 100).w    // Width-based
+    BoxConstraints(maxWidth: 100, minHeight: 100).h    // Height-based
+    BoxConstraints(maxWidth: 100, minHeight: 100).r    // Radius-based
+    BoxConstraints(maxWidth: 100, minHeight: 100).hw   // Height-Width mixed
 ```
 
 #### Adapt screen size
@@ -277,45 +285,63 @@ Container(
 
 #### `Note`
 
-The height can also use setWidth to ensure that it is not deformed(when you want a square)
+The height can also use setWidth to ensure that it is not deformed (when you want a square).
 
 The setHeight method is mainly to adapt to the height, which is used when you want to control the height of a screen on the UI to be the same as the actual display.
 
-Generally speaking, 50.w!=50.h.
+Generally speaking, `50.w != 50.h`.
 
 ```dart
-//for example:
+// Examples:
 
-//If you want to display a rectangle:
+// Rectangle (different width and height scaling):
 Container(
   width: 375.w,
   height: 375.h,
 ),
-            
-//If you want to display a square based on width:
+
+// Square based on width:
 Container(
   width: 300.w,
   height: 300.w,
 ),
 
-//If you want to display a square based on height:
+// Square based on height:
 Container(
   width: 300.h,
   height: 300.h,
 ),
 
-//If you want to display a square based on minimum(height, width):
+// Square based on minimum(width, height):
 Container(
   width: 300.r,
   height: 300.r,
+),
+
+// Square based on diagonal scaling:
+Container(
+  width: 300.dg,
+  height: 300.dg,
+),
+
+// Square based on area scaling:
+Container(
+  width: 300.ar,
+  height: 300.ar,
+),
+
+// Square based on maximum(width, height):
+Container(
+  width: 300.dm,
+  height: 300.dm,
 ),
 ```
 
 #### Adapter font
 
-``` dart
+```dart
 //Incoming font size(The unit is the same as the unit at initialization)
-ScreenUtil().setSp(28) 
+ScreenUtil().setSp(28)
 28.sp
 
 //for example:
@@ -381,38 +407,55 @@ MediaQuery(
 
 [widget test](https://github.com/OpenFlutter/flutter_screenutil/issues/115)
 
-### Example
+## New Features
 
-[example demo](https://github.com/OpenFlutter/flutter_screenutil/blob/master/example/lib)
+This simplified version includes the following enhancements:
 
-To use second method run: `flutter run --dart-define=method=2`
+### Additional Scaling Methods
 
-### Effect
+1. **Diagonal Scaling (`diagonal()` / `.dg`)**: Scales based on the diagonal of the screen using the formula `√(width² + height²)`. This provides a balanced scaling that considers both dimensions proportionally.
 
-![effect](demo_en.png)
-![tablet effect](demo_tablet_en.png)
+2. **Area Scaling (`area()` / `.ar`)**: Scales based on the area (width × height). Useful when you want scaling to be more aggressive on larger screens.
 
+3. **Diameter Scaling (`diameter()` / `.dm`)**: Scales based on the maximum of width or height. Opposite of radius scaling.
 
-### Update for Version 5.9.0 (Tests)
-Reported as bug in [#515](https://github.com/OpenFlutter/flutter_screenutil/issues/515)
+### FontSizeResolver Options
 
+The `fontSizeResolver` parameter now supports multiple scaling strategies:
 
-In version 5.9.0, to ensure compatibility and proper functioning of your tests, it is crucial to use the method `tester.pumpAndSettle()`; when conducting widget tests that depend on animations or a settling time to complete their state.
+- `FontSizeResolvers.scale` (default) - Uses scaleText with minTextAdapt consideration
+- `FontSizeResolvers.width` - Scales font based on width
+- `FontSizeResolvers.height` - Scales font based on height
+- `FontSizeResolvers.radius` - Scales font based on min(width, height)
+- `FontSizeResolvers.diameter` - Scales font based on max(width, height)
+- `FontSizeResolvers.diagonal` - Scales font based on diagonal
+- `FontSizeResolvers.area` - Scales font based on area
 
-In the previous version, this step was not strictly necessary. However, to maintain consistency in your tests and avoid unexpected errors, it's strongly recommended incorporating await tester.pumpAndSettle(); in your widget tests if you are using version 5.9.0
+### Performance Improvements
 
-Example usage:
+- Pre-calculated diagonal scale for better performance
+- Optimized rebuild mechanism to only update necessary widgets
+
+## Testing
+
+When conducting widget tests, ensure you use `tester.pumpAndSettle()` to allow widgets to complete their initialization:
+
 ```dart
 testWidgets('Should ensure widgets settle correctly', (WidgetTester tester) async {
-await tester.pumpWidget(
-  const MaterialApp(
-    home: ScreenUtilInit(
-      child: MyApp(),
-    ),  
-  ),
-);
-// Insertion of recommended method to prevent failures
-await tester.pumpAndSettle();
-// Continue with your assertions and tests
+  await tester.pumpWidget(
+    const MaterialApp(
+      home: ScreenUtilInit(
+        child: MyApp(),
+      ),
+    ),
+  );
+  // Wait for widgets to settle
+  await tester.pumpAndSettle();
+  // Continue with your assertions and tests
 });
 ```
+
+## Credits
+
+Based on [flutter_screenutil](https://github.com/OpenFlutter/flutter_screenutil) by OpenFlutter.  
+Simplified and enhanced by Rahul Kumar Gupta.
