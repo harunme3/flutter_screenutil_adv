@@ -2,6 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key, required this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  Widget build(BuildContext context) => HomePageScaffold(title: widget.title);
+}
+
 class HomePageScaffold extends StatelessWidget with SU {
   const HomePageScaffold({Key? key, this.title = ''}) : super(key: key);
 
@@ -23,10 +37,6 @@ class HomePageScaffold extends StatelessWidget with SU {
   Widget build(BuildContext context) {
     printScreenInformation(context);
 
-    /// Uncomment if you wanna force current widget to be rebuilt with updated values
-    /// Must use it if you use the second method, or if you use ScreenUtilInit's child.
-    /// Note: don't use it along with ScreenUtil.init()
-    // ScreenUtil.registerToBuild(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -187,7 +197,7 @@ class HomePageScaffold extends StatelessWidget with SU {
                           color: Colors.black,
                           fontSize: 16.sp,
                         ),
-                        textScaleFactor: 1.0,
+                        textScaler: TextScaler.linear(1.0),
                       ),
                       Text(
                         '16sp,if data is not set in MediaQuery,my font size will change with the system.',
