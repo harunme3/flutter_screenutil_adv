@@ -5,7 +5,7 @@
 
 import 'package:flutter/foundation.dart' show kIsWeb, defaultTargetPlatform;
 
-import 'dart:math' show min, max;
+import 'dart:math' show min, max, sqrt, pow;
 import 'dart:ui' as ui show FlutterView;
 
 import 'package:flutter/widgets.dart';
@@ -13,8 +13,11 @@ import 'package:flutter/widgets.dart';
 typedef FontSizeResolver = double Function(num fontSize, ScreenUtil instance);
 
 class ScreenUtil {
-  static const Size defaultSize = Size(360, 690);
+  ScreenUtil._();
   static ScreenUtil _instance = ScreenUtil._();
+  factory ScreenUtil() => _instance;
+
+  static const Size defaultSize = Size(360, 690);
 
   /// Size of the phone in UI Design , dp
   late Size _uiSize;
@@ -26,10 +29,7 @@ class ScreenUtil {
   late MediaQueryData _data;
   late bool _splitScreenMode;
   FontSizeResolver? fontSizeResolver;
-
-  ScreenUtil._();
-
-  factory ScreenUtil() => _instance;
+  late double _scaleDiagonal;
 
   /// Manually wait for window size to be initialized
   ///
@@ -129,7 +129,21 @@ class ScreenUtil {
       .._splitScreenMode = splitScreenMode ?? _instance._splitScreenMode
       .._orientation = orientation;
 
+    // Calculate diagonal scale (pre-calculated for performance)
+    _instance._calculateDiagonalScale();
+
     _instance._elementsToRebuild?.forEach((el) => el.markNeedsBuild());
+  }
+
+  /// Calculate the diagonal scale factor (called once during configuration)
+  void _calculateDiagonalScale() {
+    final designDiagonal = sqrt(
+      pow(_uiSize.width, 2) + pow(_uiSize.height, 2),
+    );
+    final actualDiagonal = sqrt(
+      pow(screenWidth, 2) + pow(screenHeight, 2),
+    );
+    _scaleDiagonal = actualDiagonal / designDiagonal;
   }
 
   /// Initializing the library.
@@ -215,7 +229,7 @@ class ScreenUtil {
   double radius(num r) => r * min(scaleWidth, scaleHeight);
 
   /// Diagonal Scalling: Adapt according to the both width and height
-  double diagonal(num d) => d * scaleHeight * scaleWidth;
+  double diagonal(num d) => d * _scaleDiagonal;
 
   /// Area Scalling: Adapt according to the both width and height
   double area(num a) => a * scaleHeight * scaleWidth;
