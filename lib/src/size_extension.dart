@@ -46,71 +46,47 @@ extension SizeExtension on num {
 
 extension EdgeInsetsExtension on EdgeInsets {
   /// Creates adapt insets using r [SizeExtension].
-  EdgeInsets get r => copyWith(
-        top: top.r,
-        bottom: bottom.r,
-        right: right.r,
-        left: left.r,
-      );
+  EdgeInsets get r =>
+      copyWith(top: top.r, bottom: bottom.r, right: right.r, left: left.r);
 
-  EdgeInsets get dm => copyWith(
-        top: top.dm,
-        bottom: bottom.dm,
-        right: right.dm,
-        left: left.dm,
-      );
+  EdgeInsets get dm =>
+      copyWith(top: top.dm, bottom: bottom.dm, right: right.dm, left: left.dm);
 
-  EdgeInsets get dg => copyWith(
-        top: top.dg,
-        bottom: bottom.dg,
-        right: right.dg,
-        left: left.dg,
-      );
+  EdgeInsets get dg =>
+      copyWith(top: top.dg, bottom: bottom.dg, right: right.dg, left: left.dg);
 
-  EdgeInsets get ar => copyWith(
-        top: top.ar,
-        bottom: bottom.ar,
-        right: right.ar,
-        left: left.ar,
-      );
+  EdgeInsets get ar =>
+      copyWith(top: top.ar, bottom: bottom.ar, right: right.ar, left: left.ar);
 
-  EdgeInsets get w => copyWith(
-        top: top.w,
-        bottom: bottom.w,
-        right: right.w,
-        left: left.w,
-      );
+  EdgeInsets get w =>
+      copyWith(top: top.w, bottom: bottom.w, right: right.w, left: left.w);
 
-  EdgeInsets get h => copyWith(
-        top: top.h,
-        bottom: bottom.h,
-        right: right.h,
-        left: left.h,
-      );
+  EdgeInsets get h =>
+      copyWith(top: top.h, bottom: bottom.h, right: right.h, left: left.h);
 }
 
 extension BorderRadiusExtension on BorderRadius {
   /// Creates adapt BorderRadius using r [SizeExtension].
   BorderRadius get r => copyWith(
-        bottomLeft: bottomLeft.r,
-        bottomRight: bottomRight.r,
-        topLeft: topLeft.r,
-        topRight: topRight.r,
-      );
+    bottomLeft: bottomLeft.r,
+    bottomRight: bottomRight.r,
+    topLeft: topLeft.r,
+    topRight: topRight.r,
+  );
 
   BorderRadius get w => copyWith(
-        bottomLeft: bottomLeft.w,
-        bottomRight: bottomRight.w,
-        topLeft: topLeft.w,
-        topRight: topRight.w,
-      );
+    bottomLeft: bottomLeft.w,
+    bottomRight: bottomRight.w,
+    topLeft: topLeft.w,
+    topRight: topRight.w,
+  );
 
   BorderRadius get h => copyWith(
-        bottomLeft: bottomLeft.h,
-        bottomRight: bottomRight.h,
-        topLeft: topLeft.h,
-        topRight: topRight.h,
-      );
+    bottomLeft: bottomLeft.h,
+    bottomRight: bottomRight.h,
+    topLeft: topLeft.h,
+    topRight: topRight.h,
+  );
 }
 
 extension RadiusExtension on Radius {
@@ -130,32 +106,32 @@ extension RadiusExtension on Radius {
 
 extension BoxConstraintsExtension on BoxConstraints {
   /// Creates adapt BoxConstraints using r [SizeExtension].
-  BoxConstraints get r => this.copyWith(
-        maxHeight: maxHeight.r,
-        maxWidth: maxWidth.r,
-        minHeight: minHeight.r,
-        minWidth: minWidth.r,
-      );
+  BoxConstraints get r => copyWith(
+    maxHeight: maxHeight.r,
+    maxWidth: maxWidth.r,
+    minHeight: minHeight.r,
+    minWidth: minWidth.r,
+  );
 
   /// Creates adapt BoxConstraints using h-w [SizeExtension].
-  BoxConstraints get hw => this.copyWith(
-        maxHeight: maxHeight.h,
-        maxWidth: maxWidth.w,
-        minHeight: minHeight.h,
-        minWidth: minWidth.w,
-      );
+  BoxConstraints get hw => copyWith(
+    maxHeight: maxHeight.h,
+    maxWidth: maxWidth.w,
+    minHeight: minHeight.h,
+    minWidth: minWidth.w,
+  );
 
-  BoxConstraints get w => this.copyWith(
-        maxHeight: maxHeight.w,
-        maxWidth: maxWidth.w,
-        minHeight: minHeight.w,
-        minWidth: minWidth.w,
-      );
+  BoxConstraints get w => copyWith(
+    maxHeight: maxHeight.w,
+    maxWidth: maxWidth.w,
+    minHeight: minHeight.w,
+    minWidth: minWidth.w,
+  );
 
-  BoxConstraints get h => this.copyWith(
-        maxHeight: maxHeight.h,
-        maxWidth: maxWidth.h,
-        minHeight: minHeight.h,
-        minWidth: minWidth.h,
-      );
+  BoxConstraints get h => copyWith(
+    maxHeight: maxHeight.h,
+    maxWidth: maxWidth.h,
+    minHeight: minHeight.h,
+    minWidth: minWidth.h,
+  );
 }

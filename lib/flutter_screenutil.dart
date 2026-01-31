@@ -4,7 +4,7 @@
  * email: rkg87653@gmail.com
  */
 
-library flutter_screenutil;
+library;
 
 export 'src/screen_util.dart';
 export 'src/screenutil_init.dart';

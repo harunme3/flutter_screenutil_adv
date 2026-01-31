@@ -7,10 +7,8 @@ import 'screenutil_mixin.dart';
 
 typedef RebuildFactor = bool Function(MediaQueryData old, MediaQueryData data);
 
-typedef ScreenUtilInitBuilder = Widget Function(
-  BuildContext context,
-  Widget? child,
-);
+typedef ScreenUtilInitBuilder =
+    Widget Function(BuildContext context, Widget? child);
 
 abstract class RebuildFactors {
   static bool size(MediaQueryData old, MediaQueryData data) {
@@ -29,11 +27,11 @@ abstract class RebuildFactors {
     return old != data;
   }
 
-  static bool always(MediaQueryData _, MediaQueryData __) {
+  static bool always(MediaQueryData _, MediaQueryData _) {
     return true;
   }
 
-  static bool none(MediaQueryData _, MediaQueryData __) {
+  static bool none(MediaQueryData _, MediaQueryData _) {
     return false;
   }
 }
@@ -71,7 +69,7 @@ abstract class FontSizeResolvers {
 class ScreenUtilInit extends StatefulWidget {
   /// A helper widget that initializes [ScreenUtil]
   const ScreenUtilInit({
-    Key? key,
+    super.key,
     this.builder,
     this.child,
     this.rebuildFactor = RebuildFactors.size,
@@ -82,7 +80,7 @@ class ScreenUtilInit extends StatefulWidget {
     this.responsiveWidgets,
     this.excludeWidgets,
     this.fontSizeResolver = FontSizeResolvers.scale,
-  }) : super(key: key);
+  });
 
   final ScreenUtilInitBuilder? builder;
   final Widget? child;
@@ -146,7 +144,8 @@ class _ScreenUtilInitState extends State<ScreenUtilInit>
   void _markNeedsBuildIfAllowed(Element el) {
     final widgetName = el.widget.runtimeType.toString();
     if (_excludedWidgets.contains(widgetName)) return;
-    final allowed = widget is SU ||
+    final allowed =
+        widget is SU ||
         _canMarkedToBuild.contains(widgetName) ||
         !(widgetName.startsWith('_') || flutterWidgets.contains(widgetName));
 

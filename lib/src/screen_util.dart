@@ -9,7 +9,7 @@ typedef FontSizeResolver = double Function(num fontSize, ScreenUtil instance);
 
 class ScreenUtil {
   ScreenUtil._();
-  static ScreenUtil _instance = ScreenUtil._();
+  static final ScreenUtil _instance = ScreenUtil._();
   factory ScreenUtil() => _instance;
 
   static const Size defaultSize = Size(360, 690);
@@ -37,9 +37,7 @@ class ScreenUtil {
     binding.deferFirstFrame();
 
     await Future.doWhile(() {
-      if (window == null) {
-        window = binding.platformDispatcher.implicitView;
-      }
+      window ??= binding.platformDispatcher.implicitView;
 
       if (window == null || window!.physicalSize.isEmpty) {
         return Future.delayed(duration, () => true);
@@ -64,7 +62,8 @@ class ScreenUtil {
     final MediaQueryData? deviceData = (data.size.isEmpty) ? null : data;
     final Size deviceSize = deviceData?.size ?? designSize;
 
-    final orientation = deviceData?.orientation ??
+    final orientation =
+        deviceData?.orientation ??
         (deviceSize.width > deviceSize.height
             ? Orientation.landscape
             : Orientation.portrait);
@@ -83,12 +82,8 @@ class ScreenUtil {
 
   /// Calculate the diagonal scale factor (called once during configuration)
   void _calculateDiagonalScale() {
-    final designDiagonal = sqrt(
-      pow(_uiSize.width, 2) + pow(_uiSize.height, 2),
-    );
-    final actualDiagonal = sqrt(
-      pow(screenWidth, 2) + pow(screenHeight, 2),
-    );
+    final designDiagonal = sqrt(pow(_uiSize.width, 2) + pow(_uiSize.height, 2));
+    final actualDiagonal = sqrt(pow(screenWidth, 2) + pow(screenHeight, 2));
     _scaleDiagonal = actualDiagonal / designDiagonal;
   }
 
@@ -160,11 +155,12 @@ class ScreenUtil {
     if (kIsWeb) {
       deviceType = DeviceType.web;
     } else {
-      bool isMobile = defaultTargetPlatform == TargetPlatform.iOS ||
+      bool isMobile =
+          defaultTargetPlatform == TargetPlatform.iOS ||
           defaultTargetPlatform == TargetPlatform.android;
       bool isTablet =
           (orientation == Orientation.portrait && screenWidth >= 600) ||
-              (orientation == Orientation.landscape && screenHeight >= 600);
+          (orientation == Orientation.landscape && screenHeight >= 600);
 
       if (isMobile) {
         deviceType = isTablet ? DeviceType.tablet : DeviceType.mobile;
