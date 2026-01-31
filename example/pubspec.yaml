@@ -19,7 +19,6 @@ dependencies:
 
   flutter_screenutil:
     path: ../
-  device_preview: ^1.1.0
 
 dev_dependencies:
   flutter_test:

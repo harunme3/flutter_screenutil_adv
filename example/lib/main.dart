@@ -1,17 +1,10 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:example/home.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
   runApp(
-    DevicePreview(
-      enabled: kDebugMode && kIsWeb,
-      builder: (context) {
-        return MyApp();
-      },
-    ),
+    MyApp(),
   );
 }
 
