@@ -28,7 +28,7 @@ class ScreenUtil {
   late bool _minTextAdapt;
   late MediaQueryData _data;
   late bool _splitScreenMode;
-  FontSizeResolver? fontSizeResolver;
+  late FontSizeResolver fontSizeResolver;
   late double _scaleDiagonal;
 
   /// Manually wait for window size to be initialized
@@ -39,7 +39,10 @@ class ScreenUtil {
   /// example:
   /// ```dart
   /// ...
-  /// ScreenUtil.init(context, ...);
+  /// ScreenUtilInit(
+  ///   designSize: const Size(360, 690),
+  ///   child: MaterialApp(...),
+  /// );
   /// ...
   ///   FutureBuilder(
   ///     future: Future.wait([..., ensureScreenSize(), ...]),
@@ -94,26 +97,14 @@ class ScreenUtil {
   }
 
   static void configure({
-    MediaQueryData? data,
-    Size? designSize,
-    bool? splitScreenMode,
-    bool? minTextAdapt,
-    FontSizeResolver? fontSizeResolver,
+    required MediaQueryData data,
+    required Size designSize,
+    required bool splitScreenMode,
+    required bool minTextAdapt,
+    required FontSizeResolver fontSizeResolver,
   }) {
-    try {
-      if (data != null)
-        _instance._data = data;
-      else
-        data = _instance._data;
-
-      if (designSize != null)
-        _instance._uiSize = designSize;
-      else
-        designSize = _instance._uiSize;
-    } catch (_) {
-      throw Exception(
-          'You must either use ScreenUtil.init or ScreenUtilInit first');
-    }
+    _instance._data = data;
+    _instance._uiSize = designSize;
 
     final MediaQueryData? deviceData = data.nonEmptySizeOrNull();
     final Size deviceSize = deviceData?.size ?? designSize;
@@ -124,9 +115,9 @@ class ScreenUtil {
             : Orientation.portrait);
 
     _instance
-      ..fontSizeResolver = fontSizeResolver ?? _instance.fontSizeResolver
-      .._minTextAdapt = minTextAdapt ?? _instance._minTextAdapt
-      .._splitScreenMode = splitScreenMode ?? _instance._splitScreenMode
+      ..fontSizeResolver = fontSizeResolver
+      .._minTextAdapt = minTextAdapt
+      .._splitScreenMode = splitScreenMode
       .._orientation = orientation;
 
     // Calculate diagonal scale (pre-calculated for performance)
@@ -144,42 +135,6 @@ class ScreenUtil {
       pow(screenWidth, 2) + pow(screenHeight, 2),
     );
     _scaleDiagonal = actualDiagonal / designDiagonal;
-  }
-
-  /// Initializing the library.
-  static void init(
-    BuildContext context, {
-    Size designSize = defaultSize,
-    bool splitScreenMode = false,
-    bool minTextAdapt = false,
-    FontSizeResolver? fontSizeResolver,
-  }) {
-    final view = View.maybeOf(context);
-    return configure(
-      data: view != null ? MediaQueryData.fromView(view) : null,
-      designSize: designSize,
-      splitScreenMode: splitScreenMode,
-      minTextAdapt: minTextAdapt,
-      fontSizeResolver: fontSizeResolver,
-    );
-  }
-
-  static Future<void> ensureScreenSizeAndInit(
-    BuildContext context, {
-    Size designSize = defaultSize,
-    bool splitScreenMode = false,
-    bool minTextAdapt = false,
-    FontSizeResolver? fontSizeResolver,
-  }) {
-    return ScreenUtil.ensureScreenSize().then((_) {
-      return init(
-        context,
-        designSize: designSize,
-        minTextAdapt: minTextAdapt,
-        splitScreenMode: splitScreenMode,
-        fontSizeResolver: fontSizeResolver,
-      );
-    });
   }
 
   ///Get screen orientation
@@ -211,8 +166,8 @@ class ScreenUtil {
       (_splitScreenMode ? max(screenHeight, _uiSize.height) : screenHeight) /
       _uiSize.height;
 
-  double get scaleText =>
-      (_minTextAdapt ? min(scaleWidth, scaleHeight) : scaleWidth);
+  double scaleText(num fontSize) =>
+      fontSize * (_minTextAdapt ? min(scaleWidth, scaleHeight) : scaleWidth);
 
   /// Adapted to the device width of the UI Design.
   /// Height can also be adapted according to this to ensure no deformation ,
@@ -239,8 +194,7 @@ class ScreenUtil {
 
   ///Font size adaptation method
   ///- [fontSize] The size of the font on the UI design, in dp.
-  double setSp(num fontSize) =>
-      fontSizeResolver?.call(fontSize, _instance) ?? fontSize * scaleText;
+  double setSp(num fontSize) => fontSizeResolver.call(fontSize, _instance);
 
   DeviceType deviceType(BuildContext context) {
     var deviceType = DeviceType.web;

@@ -41,6 +41,10 @@ abstract class RebuildFactors {
 }
 
 abstract class FontSizeResolvers {
+  static double scale(num fontSize, ScreenUtil instance) {
+    return instance.scaleText(fontSize);
+  }
+
   static double width(num fontSize, ScreenUtil instance) {
     return instance.setWidth(fontSize);
   }
@@ -79,7 +83,7 @@ class ScreenUtilInit extends StatefulWidget {
     this.ensureScreenSize = true,
     this.responsiveWidgets,
     this.excludeWidgets,
-    this.fontSizeResolver = FontSizeResolvers.width,
+    this.fontSizeResolver = FontSizeResolvers.scale,
   }) : super(key: key);
 
   final ScreenUtilInitBuilder? builder;

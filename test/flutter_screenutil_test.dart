@@ -20,6 +20,7 @@ void main() {
         designSize: uiSize,
         minTextAdapt: true,
         splitScreenMode: false,
+        fontSizeResolver: FontSizeResolvers.scale,
       );
 
       expect(1.w, smallerDeviceSize.width / uiSize.width);
@@ -34,6 +35,7 @@ void main() {
         designSize: uiSize,
         minTextAdapt: true,
         splitScreenMode: false,
+        fontSizeResolver: FontSizeResolvers.scale,
       );
 
       expect(1.w, biggerDeviceSize.width / uiSize.width);
