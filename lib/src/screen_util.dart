@@ -203,7 +203,7 @@ class ScreenUtil {
 
   /// The ratio of actual height to UI design
   double get scaleHeight =>
-      (_splitScreenMode ? max(screenHeight, 700) : screenHeight) /
+      (_splitScreenMode ? max(screenHeight, _uiSize.height) : screenHeight) /
       _uiSize.height;
 
   double get scaleText =>
