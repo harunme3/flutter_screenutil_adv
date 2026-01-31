@@ -18,6 +18,9 @@ class ScreenUtil {
   ///Screen orientation
   late Orientation _orientation;
 
+  /// Set of elements to rebuild
+  Set<Element>? _elementsToRebuild;
+
   late bool _minTextAdapt;
   late MediaQueryData _data;
   late bool _splitScreenMode;
@@ -69,24 +72,6 @@ class ScreenUtil {
     });
 
     binding.allowFirstFrame();
-  }
-
-  Set<Element>? _elementsToRebuild;
-
-  /// ### Experimental
-  /// Register current page and all its descendants to rebuild.
-  /// Helpful when building for web and desktop
-  static void registerToBuild(
-    BuildContext context, [
-    bool withDescendants = false,
-  ]) {
-    (_instance._elementsToRebuild ??= {}).add(context as Element);
-
-    if (withDescendants) {
-      context.visitChildren((element) {
-        registerToBuild(element, true);
-      });
-    }
   }
 
   static void configure({
