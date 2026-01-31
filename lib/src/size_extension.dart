@@ -17,6 +17,9 @@ extension SizeExtension on num {
   ///[ScreenUtil.diagonal]
   double get dg => ScreenUtil().diagonal(this);
 
+  ///[ScreenUtil.area]
+  double get ar => ScreenUtil().area(this);
+
   ///[ScreenUtil.diameter]
   double get dm => ScreenUtil().diameter(this);
 

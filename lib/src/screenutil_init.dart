@@ -60,6 +60,10 @@ abstract class FontSizeResolvers {
   static double diagonal(num fontSize, ScreenUtil instance) {
     return instance.diagonal(fontSize);
   }
+
+  static double area(num fontSize, ScreenUtil instance) {
+    return instance.area(fontSize);
+  }
 }
 
 class ScreenUtilInit extends StatefulWidget {

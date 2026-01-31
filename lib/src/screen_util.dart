@@ -230,8 +230,11 @@ class ScreenUtil {
   ///Adapt according to the smaller of width or height
   double radius(num r) => r * min(scaleWidth, scaleHeight);
 
-  /// Adapt according to the both width and height
+  /// Diagonal Scalling: Adapt according to the both width and height
   double diagonal(num d) => d * scaleHeight * scaleWidth;
+
+  /// Area Scalling: Adapt according to the both width and height
+  double area(num a) => a * scaleHeight * scaleWidth;
 
   /// Adapt according to the maximum value of scale width and scale height
   double diameter(num d) => d * max(scaleWidth, scaleHeight);
@@ -286,28 +289,7 @@ class ScreenUtil {
   SizedBox setVerticalSpacing(num height) =>
       SizedBox(height: setHeight(height));
 
-  SizedBox setVerticalSpacingFromWidth(num height) =>
-      SizedBox(height: setWidth(height));
-
   SizedBox setHorizontalSpacing(num width) => SizedBox(width: setWidth(width));
-
-  SizedBox setHorizontalSpacingRadius(num width) =>
-      SizedBox(width: radius(width));
-
-  SizedBox setVerticalSpacingRadius(num height) =>
-      SizedBox(height: radius(height));
-
-  SizedBox setHorizontalSpacingDiameter(num width) =>
-      SizedBox(width: diameter(width));
-
-  SizedBox setVerticalSpacingDiameter(num height) =>
-      SizedBox(height: diameter(height));
-
-  SizedBox setHorizontalSpacingDiagonal(num width) =>
-      SizedBox(width: diagonal(width));
-
-  SizedBox setVerticalSpacingDiagonal(num height) =>
-      SizedBox(height: diagonal(height));
 }
 
 extension on MediaQueryData? {
