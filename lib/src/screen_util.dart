@@ -1,13 +1,6 @@
-/*
- * Updated by rahul on 2026/02/01.
- * email: rkg87653@gmail.com
- */
-
 import 'package:flutter/foundation.dart' show kIsWeb, defaultTargetPlatform;
-
 import 'dart:math' show min, max, sqrt, pow;
 import 'dart:ui' as ui show FlutterView;
-
 import 'package:flutter/widgets.dart';
 
 typedef FontSizeResolver = double Function(num fontSize, ScreenUtil instance);

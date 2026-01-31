@@ -1,7 +1,5 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
-
 import 'screen_util.dart';
 
 extension SizeExtension on num {

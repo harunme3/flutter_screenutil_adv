@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
-
 import 'package:flutter/widgets.dart';
-
 import './_flutter_widgets.dart';
 import 'screen_util.dart';
 import 'screenutil_mixin.dart';

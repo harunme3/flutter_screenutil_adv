@@ -1,6 +1,7 @@
 /*
- * Created by zhuoyuan on 2018/9/29.
- * email: zhuoyuan93@gmail.com
+ * Credit: https://github.com/OpenFlutter/flutter_screenutil
+ * Updated by rahul on 2026/02/01.
+ * email: rkg87653@gmail.com
  */
 
 library flutter_screenutil;
