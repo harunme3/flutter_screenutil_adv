@@ -155,41 +155,9 @@ BoxConstraints(maxWidth: 100, minHeight: 100).r    // Radius-based
 BoxConstraints(maxWidth: 100, minHeight: 100).hw   // Height-Width mixed
 ```
 
-#### Adapt screen size
-
-Pass the dp size of the design draft((The unit is the same as the unit at initialization))：
-
-Adapted to screen width: `ScreenUtil().setWidth(540)`,
-
-Adapted to screen height: `ScreenUtil().setHeight(200)`, In general, the height is best to adapt to the width
-
-If your dart sdk>=2.6, you can use extension functions:
-
-example:
-
-instead of :
-
-```dart
-Container(
-  width: ScreenUtil().setWidth(50),
-  height:ScreenUtil().setHeight(200),
-)
-```
-
-you can use it like this:
-
-```dart
-Container(
-  width: 50.w,
-  height:200.h
-)
-```
-
 #### `Note`
 
-The height can also use setWidth to ensure that it is not deformed (when you want a square).
-
-The setHeight method is mainly to adapt to the height, which is used when you want to control the height of a screen on the UI to be the same as the actual display.
+Height and width scale differently. Use the same extension for both dimensions when you want a square.
 
 Generally speaking, `50.w != 50.h`.
 
@@ -239,77 +207,7 @@ Container(
 ),
 ```
 
-#### Adapter font
-
-```dart
-//Incoming font size(The unit is the same as the unit at initialization)
-ScreenUtil().setSp(28)
-28.sp
-
-//for example:
-Column(
-  crossAxisAlignment: CrossAxisAlignment.start,
-  children: <Widget>[
-    Text(
-      '16sp, will not change with the system.',
-      style: TextStyle(
-        color: Colors.black,
-        fontSize: 16.sp,
-      ),
-      textScaleFactor: 1.0,
-    ),
-    Text(
-      '16sp,if data is not set in MediaQuery,my font size will change with the system.',
-      style: TextStyle(
-        color: Colors.black,
-        fontSize: 16.sp,
-      ),
-    ),
-  ],
-)
-```
-
-#### Setting font does not change with system font size
-
-APP global:
-
-```dart
-MaterialApp(
-  debugShowCheckedModeBanner: false,
-  title: 'Flutter_ScreenUtil',
-  theme: ThemeData(
-    primarySwatch: Colors.blue,
-  ),
-  builder: (context, widget) {
-    return MediaQuery(
-      ///Setting font does not change with system font size
-      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-      child: widget,
-    );
-  },
-  home: HomePage(title: 'FlutterScreenUtil Demo'),
-),
-```
-
-Specified Text:
-
-```dart
-Text("text", textScaleFactor: 1.0)
-```
-
-Specified Widget:
-
-```dart
-MediaQuery(
-  // If there is no context available you can wrap [MediaQuery] with [Builder]
-  data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-  child: AnyWidget(),
-)
-```
-
-[widget test](https://github.com/OpenFlutter/flutter_screenutil/issues/115)
-
-## New Features
+## New Features & Fixes
 
 This simplified version includes the following enhancements:
 
@@ -338,6 +236,10 @@ The `fontSizeResolver` parameter now supports multiple scaling strategies:
 - `FontSizeResolvers.diameter` - Scales font based on max(width, height)
 - `FontSizeResolvers.diagonal` - Scales font based on diagonal
 - `FontSizeResolvers.area` - Scales font based on area
+
+### Fixes
+
+- Removed hardcoded value 700 from split screen mode for more flexible height calculations
 
 ### Performance Improvements
 
