@@ -57,8 +57,6 @@ If you have a widget that uses the library and doesn't meet these options you ca
 
 Please set the size of the design draft before use, the width and height of the design draft.
 
-#### The first way (You should use it once in your app)
-
 ```dart
 void main() => runApp(MyApp());
 
@@ -67,21 +65,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //Set the fit size (Find your UI design, look at the dimensions of the device screen and fill it in,unit in dp)
+    //Set the fit size (Find your UI design, look at the dimensions of the device screen and fill it in, unit in dp)
     return ScreenUtilInit(
       designSize: const Size(360, 690),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      // Use builder only if you need to use library outside ScreenUtilInit context
       builder: (_ , child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'First Method',
-          // You can use the library anywhere in the app even in theme
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-            textTheme: Typography.englishLike2018.apply(fontSizeFactor: 1.sp),
-          ),
           home: child,
         );
       },
@@ -91,85 +81,6 @@ class MyApp extends StatelessWidget {
 }
 ```
 
-#### The second way:You need a trick to support font adaptation in the textTheme of app theme
-
-**Hybrid development uses the second way**
-
-not support this:
-
-```dart
-MaterialApp(
-  ...
-  //To support the following, you need to use the first initialization method
-  theme: ThemeData(
-    textTheme: TextTheme(
-      button: TextStyle(fontSize: 45.sp)
-    ),
-  ),
-)
-```
-
-but you can do this:
-
-```dart
-void main() async {
-  // Add this line
-  await ScreenUtil.ensureScreenSize();
-  runApp(MyApp());
-}
-...
-MaterialApp(
-  ...
-  builder: (ctx, child) {
-    ScreenUtil.init(ctx);
-    return Theme(
-      data: ThemeData(
-        primarySwatch: Colors.blue,
-        textTheme: TextTheme(bodyText2: TextStyle(fontSize: 30.sp)),
-      ),
-      child: HomePage(title: 'FlutterScreenUtil Demo'),
-    );
-  },
-)
-```
-
-```dart
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter_ScreenUtil',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: HomePage(title: 'FlutterScreenUtil Demo'),
-    );
-  }
-}
-
-class HomePage extends StatefulWidget {
-  const HomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  Widget build(BuildContext context) {
-    //Set the fit size (fill in the screen size of the device in the design)
-    //If the design is based on the size of the 360*690(dp)
-    ScreenUtil.init(context, designSize: const Size(360, 690));
-    ...
-  }
-}
-```
-
-**Note: calling ScreenUtil.init second time, any non-provided parameter will not be replaced with default value. Use ScreenUtil.configure instead**
-
 ### API
 
 #### Font Size Resolver Options
@@ -178,7 +89,7 @@ You can customize how font sizes are scaled using the `fontSizeResolver` paramet
 
 ```dart
 ScreenUtilInit(
-  fontSizeResolver: FontSizeResolvers.scale,  // Default: scales with width (minTextAdapt affects this)
+  fontSizeResolver: FontSizeResolvers.scale,  // Default: scales with minimum of width and height (minTextAdapt affects this)
   // Other options:
   // fontSizeResolver: FontSizeResolvers.width,     // Scale based on width
   // fontSizeResolver: FontSizeResolvers.height,    // Scale based on height
@@ -190,67 +101,58 @@ ScreenUtilInit(
 )
 ```
 
-#### Pass the dp size of the design draft
+#### Extension Examples
 
 ```dart
-    // Basic scaling methods
-    ScreenUtil().setWidth(540)  (dart sdk>=2.6 : 540.w)   // Adapted to screen width
-    ScreenUtil().setHeight(200) (dart sdk>=2.6 : 200.h)   // Adapted to screen height
-    ScreenUtil().radius(200)    (dart sdk>=2.6 : 200.r)   // Adapt according to min(width, height)
-    ScreenUtil().setSp(24)      (dart sdk>=2.6 : 24.sp)   // Adapter font
-    12.spMin   // return min(12, 12.sp)
-    12.spMax   // return max(12, 12.sp)
+// Basic scaling extensions
+540.w       // Adapted to screen width
+200.h       // Adapted to screen height
+200.r       // Adapt according to min(width, height)
+24.sp       // Adapter font
+12.spMin    // return min(12, 12.sp)
+12.spMax    // return max(12, 12.sp)
 
-    // New scaling methods
-    ScreenUtil().diagonal(100)  (dart sdk>=2.6 : 100.dg)  // Scale based on diagonal (√(width² + height²))
-    ScreenUtil().area(100)      (dart sdk>=2.6 : 100.ar)  // Scale based on area (width * height)
-    ScreenUtil().diameter(100)  (dart sdk>=2.6 : 100.dm)  // Scale based on max(width, height)
+// New scaling extensions
+100.dg      // Scale based on diagonal (√(width² + height²))
+100.ar      // Scale based on area (width * height)
+100.dm      // Scale based on max(width, height)
 
-    // Device information
-    ScreenUtil().pixelRatio       // Device pixel density
-    ScreenUtil().screenWidth   (dart sdk>=2.6 : 1.sw)    // Device width
-    ScreenUtil().screenHeight  (dart sdk>=2.6 : 1.sh)    // Device height
-    ScreenUtil().bottomBarHeight  // Bottom safe zone distance
-    ScreenUtil().statusBarHeight  // Status bar height, Notch will be higher
-    ScreenUtil().textScaleFactor  // System font scaling factor
+// Device information
+1.sw        // Screen width
+1.sh        // Screen height
+0.2.sw      // 0.2 times the screen width
+0.5.sh      // 50% of screen height
 
-    ScreenUtil().scaleWidth   // The ratio of actual width to UI design
-    ScreenUtil().scaleHeight  // The ratio of actual height to UI design
+// Spacing
+20.verticalSpace      // SizedBox(height: 20.h)
+20.horizontalSpace    // SizedBox(width: 20.w)
 
-    ScreenUtil().orientation  // Screen orientation
+// EdgeInsets extensions
+EdgeInsets.all(10).w    // Width-based
+EdgeInsets.all(10).h    // Height-based
+EdgeInsets.all(10).r    // Radius-based
+EdgeInsets.all(10).dg   // Diagonal-based
+EdgeInsets.all(10).ar   // Area-based
+EdgeInsets.all(10).dm   // Diameter-based
 
-    // Convenience extensions
-    0.2.sw  // 0.2 times the screen width
-    0.5.sh  // 50% of screen height
-    20.verticalSpace    // SizedBox(height: 20 * scaleHeight)
-    20.horizontalSpace  // SizedBox(width: 20 * scaleWidth)
+// BorderRadius extensions
+BorderRadius.all(Radius.circular(16)).w   // Width-based
+BorderRadius.all(Radius.circular(16)).h   // Height-based
+BorderRadius.all(Radius.circular(16)).r   // Radius-based
 
-    // EdgeInsets extensions
-    EdgeInsets.all(10).w    // EdgeInsets.all(10.w)
-    EdgeInsets.all(10).h    // EdgeInsets.all(10.h)
-    EdgeInsets.all(10).r    // EdgeInsets.all(10.r)
-    EdgeInsets.all(10).dg   // EdgeInsets.all(10.dg) - diagonal
-    EdgeInsets.all(10).ar   // EdgeInsets.all(10.ar) - area
-    EdgeInsets.all(10).dm   // EdgeInsets.all(10.dm) - diameter
+// Radius extensions
+Radius.circular(16).w   // Width-based
+Radius.circular(16).h   // Height-based
+Radius.circular(16).r   // Radius-based
+Radius.circular(16).dg  // Diagonal-based
+Radius.circular(16).ar  // Area-based
+Radius.circular(16).dm  // Diameter-based
 
-    // BorderRadius extensions
-    BorderRadius.all(Radius.circular(16)).w   // Width-based
-    BorderRadius.all(Radius.circular(16)).h   // Height-based
-    BorderRadius.all(Radius.circular(16)).r   // Radius-based
-
-    // Radius extensions
-    Radius.circular(16).w   // Width-based
-    Radius.circular(16).h   // Height-based
-    Radius.circular(16).r   // Radius-based
-    Radius.circular(16).dg  // Diagonal-based
-    Radius.circular(16).ar  // Area-based
-    Radius.circular(16).dm  // Diameter-based
-
-    // BoxConstraints extensions
-    BoxConstraints(maxWidth: 100, minHeight: 100).w    // Width-based
-    BoxConstraints(maxWidth: 100, minHeight: 100).h    // Height-based
-    BoxConstraints(maxWidth: 100, minHeight: 100).r    // Radius-based
-    BoxConstraints(maxWidth: 100, minHeight: 100).hw   // Height-Width mixed
+// BoxConstraints extensions
+BoxConstraints(maxWidth: 100, minHeight: 100).w    // Width-based
+BoxConstraints(maxWidth: 100, minHeight: 100).h    // Height-based
+BoxConstraints(maxWidth: 100, minHeight: 100).r    // Radius-based
+BoxConstraints(maxWidth: 100, minHeight: 100).hw   // Height-Width mixed
 ```
 
 #### Adapt screen size
@@ -419,6 +321,12 @@ This simplified version includes the following enhancements:
 
 3. **Diameter Scaling (`diameter()` / `.dm`)**: Scales based on the maximum of width or height. Opposite of radius scaling.
 
+### Split Screen Mode
+
+**`splitScreenMode`**: When enabled (default: `true`), uses the maximum of actual screen height or design height for height scaling. This ensures proper scaling in split-screen scenarios where the available height might be less than expected.
+
+Formula: `scaleHeight = max(screenHeight, designHeight) / designHeight`
+
 ### FontSizeResolver Options
 
 The `fontSizeResolver` parameter now supports multiple scaling strategies:
@@ -435,25 +343,6 @@ The `fontSizeResolver` parameter now supports multiple scaling strategies:
 
 - Pre-calculated diagonal scale for better performance
 - Optimized rebuild mechanism to only update necessary widgets
-
-## Testing
-
-When conducting widget tests, ensure you use `tester.pumpAndSettle()` to allow widgets to complete their initialization:
-
-```dart
-testWidgets('Should ensure widgets settle correctly', (WidgetTester tester) async {
-  await tester.pumpWidget(
-    const MaterialApp(
-      home: ScreenUtilInit(
-        child: MyApp(),
-      ),
-    ),
-  );
-  // Wait for widgets to settle
-  await tester.pumpAndSettle();
-  // Continue with your assertions and tests
-});
-```
 
 ## Credits
 
