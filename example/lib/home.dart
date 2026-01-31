@@ -1,23 +1,25 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key, required this.title}) : super(key: key);
+  const HomePage({super.key, required this.title});
 
   final String title;
 
   @override
-  _HomePageState createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) => HomePageScaffold(title: widget.title);
 }
 
 class HomePageScaffold extends StatelessWidget with SU {
-  const HomePageScaffold({Key? key, this.title = ''}) : super(key: key);
+  const HomePageScaffold({super.key, this.title = ''});
 
   void printScreenInformation(BuildContext context) {
     print('Device Size:${Size(1.sw, 1.sh)}');
@@ -26,7 +28,8 @@ class HomePageScaffold extends StatelessWidget with SU {
     print('Status bar height dp:${ScreenUtil().statusBarHeight}dp');
     print('The ratio of actual width to UI design:${ScreenUtil().scaleWidth}');
     print(
-        'The ratio of actual height to UI design:${ScreenUtil().scaleHeight}');
+      'The ratio of actual height to UI design:${ScreenUtil().scaleHeight}',
+    );
     print('System font scaling:${ScreenUtil().textScaleFactor}');
     print('0.5 times the screen width:${0.5.sw}dp');
     print('0.5 times the screen height:${0.5.sh}dp');
@@ -38,9 +41,7 @@ class HomePageScaffold extends StatelessWidget with SU {
     printScreenInformation(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
+      appBar: AppBar(title: Text(title)),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,10 +57,7 @@ class HomePageScaffold extends StatelessWidget with SU {
                   child: Text(
                     'My actual width: ${0.5.sw}dp \n\n'
                     'My actual height: ${200.h}dp',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12.sp,
-                    ),
+                    style: TextStyle(color: Colors.white, fontSize: 12.sp),
                   ),
                 ),
                 // Without using Extensions
@@ -88,10 +86,7 @@ class HomePageScaffold extends StatelessWidget with SU {
               height: 100.r,
               child: Text(
                 'I am a square with a side length of 100',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 12.sp,
-                ),
+                style: TextStyle(color: Colors.white, fontSize: 12.sp),
               ),
             ),
             Padding(
@@ -125,9 +120,11 @@ class HomePageScaffold extends StatelessWidget with SU {
                   ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) {
-                          return const HomePageScaffold();
-                        }),
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return const HomePageScaffold();
+                          },
+                        ),
                       );
                     },
                     child: const Text('Go to next page'),
@@ -139,7 +136,8 @@ class HomePageScaffold extends StatelessWidget with SU {
                         context: context,
                         builder: (BuildContext context) {
                           return Container(
-                            height: 200.w +
+                            height:
+                                200.w +
                                 MediaQuery.of(context).viewInsets.bottom,
                             color: Colors.amber,
                             child: Center(
@@ -151,13 +149,14 @@ class HomePageScaffold extends StatelessWidget with SU {
                                   Spacer(),
                                   TextField(),
                                   ElevatedButton(
-                                    child: const Text('Close BottomSheet'),
                                     onPressed: Navigator.of(context).pop,
+                                    child: const Text('Close BottomSheet'),
                                   ),
                                   SizedBox(
-                                      height: MediaQuery.of(context)
-                                          .viewInsets
-                                          .bottom),
+                                    height: MediaQuery.of(
+                                      context,
+                                    ).viewInsets.bottom,
+                                  ),
                                 ],
                               ),
                             ),
@@ -169,42 +168,38 @@ class HomePageScaffold extends StatelessWidget with SU {
                   ),
                   18.verticalSpace,
                   TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
+                    decoration: InputDecoration(border: OutlineInputBorder()),
                   ),
                   18.verticalSpace,
                   Text('Device width:${ScreenUtil().screenWidth}dp'),
                   Text('Device height:${ScreenUtil().screenHeight}dp'),
                   Text('Device pixel density:${ScreenUtil().pixelRatio}'),
                   Text(
-                      'Bottom safe zone distance:${ScreenUtil().bottomBarHeight}dp'),
+                    'Bottom safe zone distance:${ScreenUtil().bottomBarHeight}dp',
+                  ),
                   Text('Status bar height:${ScreenUtil().statusBarHeight}dp'),
                   Text(
-                      'The ratio of actual width to UI design:${ScreenUtil().scaleWidth}'),
+                    'The ratio of actual width to UI design:${ScreenUtil().scaleWidth}',
+                  ),
                   Text(
-                      'The ratio of actual height to UI design:${ScreenUtil().scaleHeight}'),
+                    'The ratio of actual height to UI design:${ScreenUtil().scaleHeight}',
+                  ),
                   10.verticalSpace,
                   Text(
-                      'System font scaling factor:${ScreenUtil().textScaleFactor}'),
+                    'System font scaling factor:${ScreenUtil().textScaleFactor}',
+                  ),
                   5.verticalSpace,
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
                       Text(
                         '16sp, will not change with the system.',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16.sp,
-                        ),
+                        style: TextStyle(color: Colors.black, fontSize: 16.sp),
                         textScaler: TextScaler.linear(1.0),
                       ),
                       Text(
                         '16sp,if data is not set in MediaQuery,my font size will change with the system.',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16.sp,
-                        ),
+                        style: TextStyle(color: Colors.black, fontSize: 16.sp),
                       ),
                     ],
                   ),
@@ -221,7 +216,6 @@ class HomePageScaffold extends StatelessWidget with SU {
                 ? DeviceOrientation.landscapeRight
                 : DeviceOrientation.portraitUp,
           ]);
-          //  setState(() {});
         },
         label: const Text('Rotate'),
       ),
