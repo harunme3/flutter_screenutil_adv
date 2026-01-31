@@ -73,8 +73,6 @@ class ScreenUtilInit extends StatefulWidget {
     this.splitScreenMode = false,
     this.minTextAdapt = false,
     this.ensureScreenSize = false,
-    this.enableScaleWH,
-    this.enableScaleText,
     this.responsiveWidgets,
     this.excludeWidgets,
     this.fontSizeResolver = FontSizeResolvers.width,
@@ -85,8 +83,6 @@ class ScreenUtilInit extends StatefulWidget {
   final bool splitScreenMode;
   final bool minTextAdapt;
   final bool ensureScreenSize;
-  final bool Function()? enableScaleWH;
-  final bool Function()? enableScaleText;
   final RebuildFactor rebuildFactor;
   final FontSizeResolver fontSizeResolver;
 
@@ -112,9 +108,6 @@ class _ScreenUtilInitState extends State<ScreenUtilInit>
     if (widget.responsiveWidgets != null) {
       _canMarkedToBuild.addAll(widget.responsiveWidgets!);
     }
-
-    ScreenUtil.enableScale(
-        enableWH: widget.enableScaleWH, enableText: widget.enableScaleText);
 
     _validateSize().then(_screenSizeCompleter.complete);
 
