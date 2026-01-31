@@ -3,6 +3,8 @@ import 'dart:math' show min, max, sqrt, pow;
 import 'dart:ui' as ui show FlutterView;
 import 'package:flutter/widgets.dart';
 
+enum DeviceType { mobile, tablet, web, mac, windows, linux, fuchsia }
+
 typedef FontSizeResolver = double Function(num fontSize, ScreenUtil instance);
 
 class ScreenUtil {
@@ -84,7 +86,7 @@ class ScreenUtil {
     _instance._data = data;
     _instance._uiSize = designSize;
 
-    final MediaQueryData? deviceData = data.nonEmptySizeOrNull();
+    final MediaQueryData? deviceData = (data.size.isEmpty) ? null : data;
     final Size deviceSize = deviceData?.size ?? designSize;
 
     final orientation = deviceData?.orientation ??
@@ -219,14 +221,3 @@ class ScreenUtil {
 
   SizedBox setHorizontalSpacing(num width) => SizedBox(width: setWidth(width));
 }
-
-extension on MediaQueryData? {
-  MediaQueryData? nonEmptySizeOrNull() {
-    if (this?.size.isEmpty ?? true)
-      return null;
-    else
-      return this;
-  }
-}
-
-enum DeviceType { mobile, tablet, web, mac, windows, linux, fuchsia }
