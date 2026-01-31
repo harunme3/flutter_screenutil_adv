@@ -28,9 +28,6 @@ extension SizeExtension on num {
   ///I think that it is good for save size balance on big sizes of screen
   double get spMin => min(toDouble(), sp);
 
-  @Deprecated('use spMin instead')
-  double get sm => min(toDouble(), sp);
-
   double get spMax => max(toDouble(), sp);
 
   ///屏幕宽度的倍数
@@ -44,36 +41,8 @@ extension SizeExtension on num {
   ///[ScreenUtil.setHeight]
   SizedBox get verticalSpace => ScreenUtil().setVerticalSpacing(this);
 
-  ///[ScreenUtil.setVerticalSpacingFromWidth]
-  SizedBox get verticalSpaceFromWidth =>
-      ScreenUtil().setVerticalSpacingFromWidth(this);
-
   ///[ScreenUtil.setWidth]
   SizedBox get horizontalSpace => ScreenUtil().setHorizontalSpacing(this);
-
-  ///[ScreenUtil.radius]
-  SizedBox get horizontalSpaceRadius =>
-      ScreenUtil().setHorizontalSpacingRadius(this);
-
-  ///[ScreenUtil.radius]
-  SizedBox get verticalSpacingRadius =>
-      ScreenUtil().setVerticalSpacingRadius(this);
-
-  ///[ScreenUtil.diameter]
-  SizedBox get horizontalSpaceDiameter =>
-      ScreenUtil().setHorizontalSpacingDiameter(this);
-
-  ///[ScreenUtil.diameter]
-  SizedBox get verticalSpacingDiameter =>
-      ScreenUtil().setVerticalSpacingDiameter(this);
-
-  ///[ScreenUtil.diagonal]
-  SizedBox get horizontalSpaceDiagonal =>
-      ScreenUtil().setHorizontalSpacingDiagonal(this);
-
-  ///[ScreenUtil.diagonal]
-  SizedBox get verticalSpacingDiagonal =>
-      ScreenUtil().setVerticalSpacingDiagonal(this);
 }
 
 extension EdgeInsetsExtension on EdgeInsets {
