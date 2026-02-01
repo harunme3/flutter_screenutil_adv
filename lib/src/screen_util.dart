@@ -91,7 +91,7 @@ class ScreenUtil {
   Orientation get orientation => _orientation;
 
   /// The number of font pixels for each logical pixel.
-  double get textScaleFactor => _data.textScaleFactor;
+  double get textScaleFactor => _data.textScaler.scale(1);
 
   /// The size of the media in logical pixels (e.g, the size of the screen).
   double? get pixelRatio => _data.devicePixelRatio;

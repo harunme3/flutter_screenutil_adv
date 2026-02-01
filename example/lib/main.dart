@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Responsive Widgets',
-          home: const HomePage(title: 'Responsive Widgets'),
+          home: const HomePage(),
         );
       },
     );

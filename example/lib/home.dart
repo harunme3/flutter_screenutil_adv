@@ -5,9 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
-
-  final String title;
+  const HomePage({super.key});
 
   @override
   HomePageState createState() => HomePageState();
@@ -15,11 +13,11 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   @override
-  Widget build(BuildContext context) => HomePageScaffold(title: widget.title);
+  Widget build(BuildContext context) => HomePageScaffold();
 }
 
 class HomePageScaffold extends StatelessWidget with SU {
-  const HomePageScaffold({super.key, this.title = ''});
+  const HomePageScaffold({super.key});
 
   void printScreenInformation(BuildContext context) {
     print('Device Size:${Size(1.sw, 1.sh)}');
@@ -41,7 +39,7 @@ class HomePageScaffold extends StatelessWidget with SU {
     printScreenInformation(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      appBar: AppBar(title: const Text('Responsive Widgets')),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,6 +219,4 @@ class HomePageScaffold extends StatelessWidget with SU {
       ),
     );
   }
-
-  final String title;
 }
