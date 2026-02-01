@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'features/with_screenutil/with_screenutil_page.dart';
+import 'features/with_screenutil/signup_page.dart';
 import 'features/without_screenutil/without_screenutil_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -8,13 +9,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Initialize ScreenUtil only once in the main app or the root widget,
-    // but ensuring it's available here.
-    // Assuming main.dart calls ScreenUtilInit around MaterialApp or HomePage.
-    // If not, we might need to wrap here, but typically it is done in main.dlart.
-
     return Scaffold(
-      appBar: AppBar(title: const Text('ScreenUtil Example')),
+      appBar: AppBar(title: const Text('Demo App')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -27,7 +23,16 @@ class HomePage extends StatelessWidget {
               },
               child: const Text('Features With ScreenUtil'),
             ),
-            const SizedBox(height: 20),
+            10.verticalSpace,
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(
+                  context,
+                ).push(MaterialPageRoute(builder: (_) => const SignupPage()));
+              },
+              child: const Text('Signup Page (ScreenUtil)'),
+            ),
+            10.verticalSpace,
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(

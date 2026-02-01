@@ -221,7 +221,7 @@ This simplified version includes the following enhancements:
 
 ### Split Screen Mode
 
-**`splitScreenMode`**: When enabled (default: `true`), uses the maximum of actual screen height or design height for height scaling. This ensures proper scaling in split-screen scenarios where the available height might be less than expected.
+**`splitScreenMode`**: When enabled (default: `false`), uses the maximum of actual screen height or design height for height scaling. This ensures proper scaling in split-screen scenarios where the available height might be less than expected.
 
 Formula: `scaleHeight = max(screenHeight, designHeight) / designHeight`
 
