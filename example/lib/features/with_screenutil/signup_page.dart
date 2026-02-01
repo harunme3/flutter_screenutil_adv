@@ -63,16 +63,16 @@ class _SignupPageState extends State<SignupPage> {
     return Column(
       children: [
         Container(
-          width: 60.ar,
-          height: 60.ar,
+          width: 60.r,
+          height: 60.r,
           decoration: BoxDecoration(
             color: Colors.white.withValues(alpha: 0.2),
             shape: BoxShape.circle,
-            border: Border.all(color: Colors.white, width: 2.ar),
+            border: Border.all(color: Colors.white, width: 2.r),
           ),
           child: Icon(
             Icons.person_add_rounded,
-            size: 30.ar,
+            size: 30.r,
             color: Colors.white,
           ),
         ),
@@ -256,19 +256,19 @@ class _SignupPageState extends State<SignupPage> {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.r),
-          borderSide: BorderSide(color: Colors.grey[200]!, width: 1.ar),
+          borderSide: BorderSide(color: Colors.grey[200]!, width: 1.r),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.r),
-          borderSide: BorderSide(color: Color(0xFF667eea), width: 1.5.ar),
+          borderSide: BorderSide(color: Color(0xFF667eea), width: 1.5.r),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.r),
-          borderSide: BorderSide(color: Colors.red, width: 1.ar),
+          borderSide: BorderSide(color: Colors.red, width: 1.r),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.r),
-          borderSide: BorderSide(color: Colors.red, width: 1.ar),
+          borderSide: BorderSide(color: Colors.red, width: 1.r),
         ),
         contentPadding: EdgeInsets.symmetric(horizontal: 20.r, vertical: 10.r),
       ),
@@ -278,20 +278,26 @@ class _SignupPageState extends State<SignupPage> {
   Widget _buildTermsCheckbox() {
     return Row(
       children: [
-        SizedBox(
-          width: 24.ar,
-          height: 24.ar,
-          child: Checkbox(
-            value: _agreeToTerms,
-            onChanged: (value) {
-              setState(() {
-                _agreeToTerms = value ?? false;
-              });
-            },
-            activeColor: Color(0xFF667eea),
-            shape: RoundedRectangleBorder(
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              _agreeToTerms = !_agreeToTerms;
+            });
+          },
+          child: Container(
+            width: 24.r,
+            height: 24.r,
+            decoration: BoxDecoration(
+              color: _agreeToTerms ? Color(0xFF667eea) : Colors.transparent,
               borderRadius: BorderRadius.circular(4.r),
+              border: Border.all(
+                color: _agreeToTerms ? Color(0xFF667eea) : Colors.grey[400]!,
+                width: 2.r,
+              ),
             ),
+            child: _agreeToTerms
+                ? Icon(Icons.check, size: 16.r, color: Colors.white)
+                : null,
           ),
         ),
         SizedBox(width: 8.w),
@@ -323,64 +329,59 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   Widget _buildSignupButton() {
-    return Container(
-      height: 50.h,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFF667eea), Color(0xFF764ba2)],
-        ),
-        borderRadius: BorderRadius.circular(12.r),
-        boxShadow: [
-          BoxShadow(
-            color: Color(0xFF667eea).withValues(alpha: 0.3),
-            blurRadius: 8.r,
-            offset: Offset(0, 4.h),
-          ),
-        ],
-      ),
-      child: ElevatedButton(
-        onPressed: () {
-          if (_formKey.currentState!.validate()) {
-            if (!_agreeToTerms) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Please agree to Terms & Conditions'),
-                  backgroundColor: Colors.red,
-                  behavior: SnackBarBehavior.floating,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                ),
-              );
-              return;
-            }
-            // Handle signup logic
+    return GestureDetector(
+      onTap: () {
+        if (_formKey.currentState!.validate()) {
+          if (!_agreeToTerms) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Account created successfully!'),
-                backgroundColor: Colors.green,
+                content: Text('Please agree to Terms & Conditions'),
+                backgroundColor: Colors.red,
                 behavior: SnackBarBehavior.floating,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.r),
                 ),
               ),
             );
+            return;
           }
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r),
+          // Handle signup logic
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Account created successfully!'),
+              backgroundColor: Colors.green,
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+          );
+        }
+      },
+      child: Container(
+        height: 50.h,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF667eea), Color(0xFF764ba2)],
           ),
+          borderRadius: BorderRadius.circular(12.r),
+          boxShadow: [
+            BoxShadow(
+              color: Color(0xFF667eea).withValues(alpha: 0.3),
+              blurRadius: 8.r,
+              offset: Offset(0, 4.0),
+            ),
+          ],
         ),
-        child: Text(
-          'Sign Up',
-          style: TextStyle(
-            fontSize: 14.sp,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-            letterSpacing: 0.5,
+        child: Center(
+          child: Text(
+            'Sign Up',
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              letterSpacing: 0.5,
+            ),
           ),
         ),
       ),
