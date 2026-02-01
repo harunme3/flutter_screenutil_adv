@@ -74,7 +74,7 @@ class ScreenUtilInit extends StatefulWidget {
     this.child,
     this.rebuildFactor = RebuildFactors.size,
     this.designSize = ScreenUtil.defaultSize,
-    this.splitScreenMode = true,
+    this.splitScreenMode = false,
     this.minTextAdapt = true,
     this.ensureScreenSize = true,
     this.responsiveWidgets,
