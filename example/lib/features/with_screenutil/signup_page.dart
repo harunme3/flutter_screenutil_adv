@@ -439,23 +439,16 @@ class _SignupPageState extends State<SignupPage> {
     required String label,
     required Color color,
   }) {
-    return Container(
-      height: 48.h,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey[300]!, width: 1.w),
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: ElevatedButton(
-        onPressed: () {
-          // Handle social login
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          foregroundColor: color,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r),
-          ),
+    return GestureDetector(
+      onTap: () {
+        // Handle social login
+      },
+      child: Container(
+        height: 48.h,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Colors.grey[300]!, width: 1.r),
+          borderRadius: BorderRadius.circular(12.r),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
